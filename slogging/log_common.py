@@ -242,7 +242,6 @@ def multiprocess_collate(processor_klass, processor_args, processor_method,
         in_queue.put(x)
     for _junk in range(worker_count):
         in_queue.put(None)  # tell the worker to end
-    in_queue.join_thread()
     in_queue.close()
     while True:
         try:
@@ -286,7 +285,5 @@ def collate_worker(processor_klass, processor_args, processor_method, in_queue,
         if logger:
             logger.exception('Error in worker')
     finally:
-        in_queue.join_thread()
         in_queue.close()
-        out_queue.join_thread()
         out_queue.close()
